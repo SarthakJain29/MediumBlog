@@ -73,7 +73,7 @@ blogRouter.put('/', async (c) => {
     if(!success){
         c.status(411);
         return c.json({
-            message: "Incorrect inputs"
+            message: "inputs are incoorect"
         })
     }
     const blog = await prisma.post.update({

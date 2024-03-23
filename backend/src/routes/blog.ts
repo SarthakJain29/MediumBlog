@@ -10,18 +10,78 @@ export const blogRouter = new Hono<{
     }
 }>();
 
+blogRouter.post('/', async (c) => {
+    const prisma = new PrismaClient({
+		datasourceUrl: c.env?.DATABASE_URL	,
+	}).$extends(withAccelerate());
 
-blogRouter.get('/:id', (c) => {
-	const id = c.req.param('id')
-	console.log(id);
-	return c.text('get blog route')
+	const body = await c.req.json();
+
+    const blog = await prisma.post.create({
+        data:{
+            title: body.title,
+            content: body.content,
+            authorId: '1'
+        }
+    })
+
+	return c.json({
+        id: blog.id
+    })
 })
 
-blogRouter.post('/blog', (c) => {
+blogRouter.put('/', async (c) => {
+	const prisma = new PrismaClient({
+		datasourceUrl: c.env?.DATABASE_URL	,
+	}).$extends(withAccelerate());
 
-	return c.text('signin route')
+	const body = await c.req.json();
+
+    const blog = await prisma.post.update({
+        where:{
+            id: body.id
+        },
+        data:{
+            title: body.title,
+            content: body.content,
+        }
+    })
+
+	return c.json({
+        id: blog.id
+    })
 })
 
-blogRouter.put('/blog', (c) => {
-	return c.text('signin route')
+blogRouter.get('/', async (c) => {
+    const prisma = new PrismaClient({
+		datasourceUrl: c.env?.DATABASE_URL,
+	}).$extends(withAccelerate());
+
+	const body = await c.req.json();
+    try{
+        const blog = await prisma.post.findFirst({
+            where: {
+                id: body.id
+            }
+        })
+    
+        return c.json({
+            blog
+        })
+    }catch(e){
+        c.status(411);
+        return c.text("Error while fetching blog");
+    }
+})
+
+blogRouter.get('/bulk', async (c)=>{
+    const prisma = new PrismaClient({
+        datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+
+    const blogs = prisma.post.findMany();
+
+    return c.json({
+        blogs
+    })
 })

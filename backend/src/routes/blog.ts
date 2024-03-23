@@ -8,20 +8,37 @@ export const blogRouter = new Hono<{
         DATABASE_URL: string,
         JWT_SECRET: string
     }
+    Variables:{
+        userId: string
+    }
 }>();
+
+blogRouter.use("/*", async (c,next)=>{
+    const authheader = c.req.header("authorization") || "";
+    const user = await verify(authheader, c.env.JWT_SECRET);
+    if(user){
+        c.set("userId", user.id);
+        next()
+    }else{
+        c.status(403);
+        return c.json({
+            msg: "You are not authorized"
+        })
+    }
+});
 
 blogRouter.post('/', async (c) => {
     const prisma = new PrismaClient({
 		datasourceUrl: c.env?.DATABASE_URL	,
 	}).$extends(withAccelerate());
-
+    const authorId = c.get("userId");
 	const body = await c.req.json();
 
     const blog = await prisma.post.create({
         data:{
             title: body.title,
             content: body.content,
-            authorId: '1'
+            authorId: authorId
         }
     })
 

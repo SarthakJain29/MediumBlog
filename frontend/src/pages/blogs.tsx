@@ -1,27 +1,26 @@
 import { Appbar } from "../components/appbar"
 import { BlogCard } from "../components/blogcard"
+import { useBlogs } from "../hooks"
 
 
 export const Blogs=()=>{
+    const {loading, blogs} = useBlogs();
+
+    if(loading){
+        return <div>
+            loading...
+        </div>
+    }
     return <div >
         <Appbar/>
         <div className="flex justify-center">
-            <div className="fmax-w-xl">
-                <BlogCard
-                    authorName="Sarthak Jain"
-                    title={"How an ugly single page website makes 5000$ a month with affiliate marketing"}
-                    content="How and ugly single page website makes 5000$ a month with affiliate marketingHow and ugly single page website makes 5000$ a month with affiliate marketingHow and ugly single page website makes 5000$ a month with affiliate marketing " 
-                    publishedDate="26th feb 2024" /> 
-                <BlogCard
-                    authorName="Sarthak Jain"
-                    title={"How an ugly single page website makes 5000$ a month with affiliate marketing"}
-                    content="How and ugly single page website makes 5000$ a month with affiliate marketingHow and ugly single page website makes 5000$ a month with affiliate marketingHow and ugly single page website makes 5000$ a month with affiliate marketing " 
-                    publishedDate="26th feb 2024" /> 
-                <BlogCard
-                    authorName="Sarthak Jain"
-                    title={"How an ugly single page website makes 5000$ a month with affiliate marketing"}
-                    content="How and ugly single page website makes 5000$ a month with affiliate marketingHow and ugly single page website makes 5000$ a month with affiliate marketingHow and ugly single page website makes 5000$ a month with affiliate marketing " 
-                    publishedDate="26th feb 2024" />   
+            <div>
+                {blogs.map(blog => <BlogCard
+                    authorName={blog.author.name || "Anonymous"}
+                    title={blog.title}
+                    content={blog.content} 
+                    publishedDate="26th feb 2024" /> )}
+                 
             </div>
         </div>
     </div> 

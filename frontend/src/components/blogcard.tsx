@@ -1,7 +1,10 @@
+import { Link } from "react-router-dom";
+
  
 
 
 interface BlogCardProps{
+    id:number;
     authorName: string;
     title: string;
     content: string;
@@ -9,32 +12,35 @@ interface BlogCardProps{
 }
 
  export const BlogCard = ({
+    id,
     authorName,
     title,
     content,
     publishedDate
  }: BlogCardProps)=>{
-    return <div className="p-4 border-b border-slate-200 pb-4">
-        <div className="flex">
-            <div className="flex justify-center flex-col">
-                <Avatar name = {authorName}/> 
+    return <Link to={`/blog/${id}`}>
+        <div className="p-4 border-b border-slate-200 pb-4 w-screen max-w-screen-lg cursor-pointer">
+            <div className="flex">
+                <div className="flex justify-center flex-col">
+                    <Avatar name = {authorName}/> 
+                </div>
+                <div className="font-extralight pl-2"> {authorName} 
+                </div>
+                <div className="pl-2 font-thin text-slate-800">
+                    {publishedDate}
+                </div>
             </div>
-            <div className="font-extralight pl-2"> {authorName} 
+            <div className="text-xl font-semibold">
+                {title}
             </div>
-            <div className="pl-2 font-thin text-slate-800">
-                {publishedDate}
+            <div className="text-md font-thin">
+                {content.slice(0,100)+"..."}
+            </div>
+            <div  className="text-slate-500 text-sm font-thin pt-4">
+                {`${Math.ceil(content.length/100)} min read`}
             </div>
         </div>
-        <div className="text-xl font-semibold">
-            {title}
-        </div>
-        <div className="text-md font-thin">
-            {content.slice(0,100)+"..."}
-        </div>
-        <div  className="text-slate-500 text-sm font-thin pt-4">
-            {`${Math.ceil(content.length/100)} min read`}
-        </div>
-    </div>
+    </Link>
 
  }
 

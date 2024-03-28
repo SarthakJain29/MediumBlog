@@ -1,7 +1,6 @@
-import { BlogSkeleton } from "../components/Blogskeleton";
 import { Appbar } from "../components/appbar"
 import { BlogCard } from "../components/blogcard"
-import { MainSkeleton } from "../components/mainskeleton";
+import { MainSkeleton } from "../components/mainskeleton"
 import { useBlogs } from "../hooks"
 
 
@@ -10,7 +9,6 @@ export const Blogs=()=>{
 
     if(loading){
         return <div>
-            <MainSkeleton/>
             <MainSkeleton/>
         </div>
     }

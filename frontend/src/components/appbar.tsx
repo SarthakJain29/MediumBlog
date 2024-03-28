@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom"
 import { Avatar } from "./blogcard"
-import { Blog } from "../pages/blog"
 
 
 export const Appbar=()=>{
